@@ -11,7 +11,7 @@ const FavoriteCats = ({ favorites, removeFavorite }) => {
 
   return (
     <div>
-      <h2 className="text-center">Favorite Cats</h2>
+      <h3 className="text-center">Favorite Cats</h3>
       <div className="favorite-cats-container">
         {favorites.map((cat, index) => (
           <div

@@ -1,9 +1,8 @@
-// src/components/CatImage.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
-const CatImage = ({ addFavorite }) => {
+const CatImage = ({ addFavorite, incrementCatsViewed }) => {
   const [catImage, setCatImage] = useState('');
 
   const fetchCatImage = async () => {
@@ -14,6 +13,7 @@ const CatImage = ({ addFavorite }) => {
         }
       });
       setCatImage(response.data[0].url);
+      incrementCatsViewed(); // Ensure this is called after setting the new image
     } catch (error) {
       console.error('Error fetching cat image:', error);
     }

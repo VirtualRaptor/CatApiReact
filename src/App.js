@@ -1,13 +1,17 @@
-// src/App.js
 import React, { useState } from 'react';
 import CatImage from './components/CatImage';
 import FavoriteCats from './components/FavoriteCats';
 
 const App = () => {
   const [favorites, setFavorites] = useState([]);
+  const [catsViewed, setCatsViewed] = useState(0);
 
   const addFavorite = (cat) => {
     setFavorites([...favorites, cat]);
+  };
+
+  const incrementCatsViewed = () => {
+    setCatsViewed(catsViewed + 1);
   };
 
   const removeFavorite = (index) => {
@@ -16,8 +20,10 @@ const App = () => {
 
   return (
     <div>
-      <h1>Cat App</h1>
-      <CatImage addFavorite={addFavorite} />
+      <div className="counter">Cats viewed today: {catsViewed}</div>
+      <h1>Cutie Paw</h1>
+      <h2>A cat image generation app</h2>
+      <CatImage addFavorite={addFavorite} incrementCatsViewed={incrementCatsViewed} />
       <FavoriteCats favorites={favorites} removeFavorite={removeFavorite} />
     </div>
   );
