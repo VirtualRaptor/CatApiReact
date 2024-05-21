@@ -16,7 +16,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Cat Appi</h1>
+      <h1>Cat App</h1>
       <CatImage addFavorite={addFavorite} />
       <FavoriteCats favorites={favorites} removeFavorite={removeFavorite} />
     </div>
