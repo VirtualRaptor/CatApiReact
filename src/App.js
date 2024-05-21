@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useState } from 'react';
+import CatImage from './components/CatImage';
+import FavoriteCats from './components/FavoriteCats';
 
-function App() {
+const App = () => {
+  const [favorites, setFavorites] = useState([]);
+
+  const addFavorite = (cat) => {
+    setFavorites([...favorites, cat]);
+  };
+
+  const removeFavorite = (index) => {
+    setFavorites(favorites.filter((_, i) => i !== index));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Cat Appi</h1>
+      <CatImage addFavorite={addFavorite} />
+      <FavoriteCats favorites={favorites} removeFavorite={removeFavorite} />
     </div>
   );
-}
+};
 
 export default App;
