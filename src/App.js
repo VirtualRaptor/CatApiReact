@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import CatImage from './components/CatImage';
 import FavoriteCats from './components/FavoriteCats';
+import 'primereact/resources/themes/lara-light-pink/theme.css'; 
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+
 
 const App = () => {
   const [favorites, setFavorites] = useState([]);

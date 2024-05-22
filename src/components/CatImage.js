@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import { Toast } from 'primereact/toast';
 
 const CatImage = ({ addFavorite, incrementCatsViewed }) => {
   const [catImage, setCatImage] = useState('');
+  const toast = useRef(null);
 
   const fetchCatImage = async () => {
     try {
@@ -19,15 +21,25 @@ const CatImage = ({ addFavorite, incrementCatsViewed }) => {
     }
   };
 
+  const showSuccess = () => {
+    toast.current.show({ severity: 'success', detail: 'Cat succesfully added to Favorites', life: 2500 });
+  };
+
   useEffect(() => {
     fetchCatImage();
   }, []);
 
+  const handleAddFavorite = (image) => {
+    addFavorite(image);
+    showSuccess();
+  };
+  
   return (
     <div className="cat-container">
+      <Toast ref={toast} />
       <img src={catImage} alt="Random Cat" className="cat-image" />
       <div className="buttons-container">
-        <Button className="primary" onClick={() => addFavorite(catImage)}>Add to Favorites</Button>
+        <Button className="primary" onClick={() => handleAddFavorite(catImage)}>Add to Favorites</Button>
         <Button className="secondary" onClick={fetchCatImage}>New Cat</Button>
       </div>
     </div>
