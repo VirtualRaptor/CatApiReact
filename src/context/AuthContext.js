@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
     const register = async (username, password) => {
         try {
             const response = await axios.post('http://localhost:5000/api/auth/register', { username, password });
-            setUser(response.data);
+            setUser({ ...response.data, username });
         } catch (error) {
             console.error('Registration error:', error);
         }
@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
     const login = async (username, password) => {
         try {
             const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
-            setUser(response.data);
+            setUser({ ...response.data, username });
         } catch (error) {
             console.error('Login error:', error);
         }

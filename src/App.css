@@ -6,15 +6,22 @@
     background-color: #f8f9fa;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-right {
+    display: flex;
+    gap: 10px;
+}
+
 .header span {
     font-size: 1.2em;
     margin-right: 10px;
 }
 
 .counter {
-    position: absolute;
-    top: 40px;
-    left: 40px;
     font-size: 25px;
     color: #2c3e50;
     background-color: rgb(255, 167, 251);
@@ -62,20 +69,26 @@
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: margin 0.3s ease; /* Added margin animation */
+    transition: transform 0.3s ease, margin 0.3s ease; /* Added margin animation */
+    cursor: pointer; /* Ensure the cursor changes to indicate interactivity */
+}
+
+.favorite-cat.enlarged-cat {
+    transform: scale(1.2);
+    margin: 20px; /* Increase the margin to ensure space around the enlarged container */
 }
 
 .favorite-cat img {
     width: 100px;
     height: 100px;
     object-fit: cover;
-    cursor: pointer;
     border-radius: 4px;
     transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 
-.favorite-cat img:hover {
-    transform: scale(1.2);
+.favorite-cat.enlarged-cat img {
+    width: 120px; /* Increase the size of the image */
+    height: 120px; /* Increase the size of the image */
 }
 
 .favorite-cat button {

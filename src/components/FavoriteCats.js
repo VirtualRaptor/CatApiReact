@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { Toast } from 'primereact/toast';
 import axios from 'axios';
@@ -13,20 +13,24 @@ const FavoriteCats = () => {
     useEffect(() => {
         const fetchFavorites = async () => {
             if (user) {
-                const response = await axios.get('http://localhost:5000/api/favorites', {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                    },
-                });
-                setFavoriteCats(response.data);
+                try {
+                    const response = await axios.get('http://localhost:5000/api/favorites', {
+                        headers: {
+                            Authorization: `Bearer ${user.token}`
+                        }
+                    });
+                    setFavoriteCats(response.data);
+                } catch (error) {
+                    console.error('Error fetching favorites:', error);
+                }
             }
         };
 
         fetchFavorites();
     }, [user]);
 
-    const handleImageClick = (cat) => {
-        setSelectedCat(cat === selectedCat ? null : cat);
+    const handleImageClick = (catImageUrl) => {
+        setSelectedCat(catImageUrl === selectedCat ? null : catImageUrl);
     };
 
     const showError = () => {
@@ -34,13 +38,17 @@ const FavoriteCats = () => {
     };
 
     const handleRemoveFavorite = async (id) => {
-        await axios.delete(`http://localhost:5000/api/favorites/${id}`, {
-            headers: {
-                Authorization: `Bearer ${user.token}`,
-            },
-        });
-        setFavoriteCats(favoriteCats.filter((cat) => cat._id !== id));
-        showError();
+        try {
+            await axios.delete(`http://localhost:5000/api/favorites/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`
+                }
+            });
+            setFavoriteCats(favoriteCats.filter((cat) => cat._id !== id));
+            showError();
+        } catch (error) {
+            console.error('Error removing favorite:', error);
+        }
     };
 
     return (
@@ -51,16 +59,12 @@ const FavoriteCats = () => {
                 {favoriteCats.map((cat) => (
                     <div
                         key={cat._id}
-                        className="favorite-cat"
-                        style={{
-                            margin: '10px'
-                        }}
+                        className={`favorite-cat ${selectedCat === cat.catImageUrl ? 'enlarged-cat' : ''}`}
+                        onClick={() => handleImageClick(cat.catImageUrl)}
                     >
                         <img
                             src={cat.catImageUrl}
                             alt="Favorite Cat"
-                            className={selectedCat === cat ? 'enlarged-cat' : 'regular-cat'}
-                            onClick={() => handleImageClick(cat)}
                         />
                         <Button className="danger" onClick={() => handleRemoveFavorite(cat._id)}>Remove</Button>
                     </div>
