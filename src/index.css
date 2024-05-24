@@ -1,4 +1,3 @@
-/* src/index.css */
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f8ff;
@@ -12,8 +11,6 @@ body {
 h1 {
   text-align: center;
   color: #e39dff;
-  margin-top: 40px;
-  margin-bottom: 10px;
   text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
   font-size: 50px;
 }
@@ -21,6 +18,7 @@ h1 {
 h2 {
   text-align: center;
   color: #ccad85;
+  margin-top: 6rem;
   margin-bottom: 40px;
   text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
   font-size: 30px;
@@ -35,21 +33,66 @@ h3 {
   font-size: 50px;
 }
 
+h4 {
+  text-align: center;
+  color: #fd5e5e;
+  margin-top: 1rem;
+  margin-bottom: 40px;
+  text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
+  font-size: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background-color: #ccad85;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for better visibility */
+  margin-bottom: 20px; /* Add margin to separate from other content */
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+}
+
+.header span {
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+.counter {
+  font-size: 20px;
+  color: #2c3e50;
+  background-color: rgb(255, 167, 251);
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .cat-container {
   text-align: center;
-  margin: 0 auto 10px auto; /* Wyśrodkowanie i zmniejszony margines */
+  margin: 0 auto 10px auto; /* Centered and reduced margin */
   background-color: #ccad85;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 400px; /* Maksymalna szerokość kontenera */
+  max-width: 400px; /* Maximum container width */
 }
 
 .cat-image {
   width: 100%;
   height: auto;
   object-fit: cover;
-  margin: 10px auto; /* Zmniejszony margines */
+  margin: 10px auto; /* Reduced margin */
   display: block;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -70,24 +113,31 @@ h3 {
 .favorite-cat {
   margin: 10px;
   text-align: center;
-  background-color: #ffea2b;
+  background-color: #fdef73;
   border-radius: 10px;
+
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: margin 0.3s ease; /* Dodana animacja marginesu */
+  transition: transform 0.3s ease, margin 0.3s ease; /* Added margin animation */
+  cursor: pointer; /* Ensure the cursor changes to indicate interactivity */
+}
+
+.favorite-cat.enlarged-cat {
+  transform: scale(1.2);
+  margin: 20px; /* Increase the margin to ensure space around the enlarged container */
 }
 
 .favorite-cat img {
   width: 100px;
   height: 100px;
   object-fit: cover;
-  cursor: pointer;
   border-radius: 4px;
   transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 
-.favorite-cat img:hover {
-  transform: scale(1.2);
+.favorite-cat.enlarged-cat img {
+  width: 120px; /* Increase the size of the image */
+  height: 120px; /* Increase the size of the image */
 }
 
 .favorite-cat button {
@@ -103,47 +153,47 @@ h3 {
 }
 
 button.primary {
-  background-color: #ffea2b;
+  background-color: #ffe282;
   color: rgb(0, 0, 0);
-  border-color: #000000; 
+  border-color: #8b4513; 
 }
 
 button.secondary {
   background-color: #e39dff;
   color: white;
-  border-color: #000000; 
+  border-color: #8b4513; 
 }
 
 button.danger {
-  background-color: #e74c3c;
+  background-color: #ff4a4a;
   color: white;
-  border-color: #000000; 
+  border-color: #8b4513; 
 }
 
 button:hover {
   opacity: 0.8;
 }
 
-.counter {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  font-size: 25px;
-  color: #2c3e50;
-  background-color: rgb(255, 167, 251);
-  padding: 5px 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.modal-custom {
+  max-width: 500px;
+  margin: 30px auto;
   padding: 20px;
-  background-color: #f8f9fa;
+  border-radius: 10px;
 }
 
-.header span {
-  font-size: 1.2em;
-  margin-right: 10px;
+.modal-custom .form-control {
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.modal-custom .btn {
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: #e39dff;
+  border-color: #8b4513;
+}
+
+.modal-custom .modal-header, .modal-custom .modal-footer {
+  border: none;
 }

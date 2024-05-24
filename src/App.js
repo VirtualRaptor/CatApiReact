@@ -1,15 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
+// src/App.js
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import CatImage from './components/CatImage';
 import FavoriteCats from './components/FavoriteCats';
 import Login from './components/Login';
 import Register from './components/Register';
+import Navbar from './components/Navbar';
 import { AuthContext } from './context/AuthContext';
-import 'primereact/resources/themes/lara-light-pink/theme.css'; 
+import 'primereact/resources/themes/lara-light-pink/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import axios from 'axios';
-import './App.css';
+import '../src/index.css'; // Import the custom CSS
 
 const App = () => {
     const { user, logout } = useContext(AuthContext);
@@ -18,24 +20,24 @@ const App = () => {
     const [favorites, setFavorites] = useState([]);
     const [catsViewed, setCatsViewed] = useState(0);
 
-    useEffect(() => {
-        const fetchFavorites = async () => {
-            if (user) {
-                try {
-                    const response = await axios.get('http://localhost:5000/api/favorites', {
-                        headers: {
-                            Authorization: `Bearer ${user.token}`
-                        }
-                    });
-                    setFavorites(response.data);
-                } catch (error) {
-                    console.error('Error fetching favorites:', error);
-                }
+    const fetchFavorites = useCallback(async () => {
+        if (user) {
+            try {
+                const response = await axios.get('http://localhost:5000/api/favorites', {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`
+                    }
+                });
+                setFavorites(response.data);
+            } catch (error) {
+                console.error('Error fetching favorites:', error);
             }
-        };
-
-        fetchFavorites();
+        }
     }, [user]);
+
+    useEffect(() => {
+        fetchFavorites();
+    }, [fetchFavorites]);
 
     const handleLoginClose = () => setShowLogin(false);
     const handleLoginShow = () => setShowLogin(true);
@@ -44,21 +46,17 @@ const App = () => {
     const handleRegisterShow = () => setShowRegister(true);
 
     const addFavorite = async (catImage) => {
-        try {
-            await axios.post('http://localhost:5000/api/favorites', { catImageUrl: catImage }, {
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
-            // Fetch updated favorites immediately
-            const response = await axios.get('http://localhost:5000/api/favorites', {
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
-            setFavorites(response.data);
-        } catch (error) {
-            console.error('Error adding favorite:', error);
+        if (!favorites.some(fav => fav.catImageUrl === catImage)) {
+            try {
+                await axios.post('http://localhost:5000/api/favorites', { catImageUrl: catImage }, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`
+                    }
+                });
+                fetchFavorites(); // Fetch updated favorites immediately
+            } catch (error) {
+                console.error('Error adding favorite:', error);
+            }
         }
     };
 
@@ -68,35 +66,22 @@ const App = () => {
 
     return (
         <div>
-            <div className="header">
-                <div className="header-left">
-                    <div className="counter">Cats viewed today: {catsViewed}</div>
-                </div>
-                <div className="header-right">
-                    {user ? (
-                        <>
-                            <span>Witaj, {user.username}</span>
-                            <Button variant="danger" onClick={logout}>Logout</Button>
-                        </>
-                    ) : (
-                        <>
-                            <Button variant="primary" onClick={handleLoginShow}>Login</Button>
-                            <Button variant="secondary" onClick={handleRegisterShow}>Register</Button>
-                        </>
-                    )}
-                </div>
-            </div>
-            <h1>Cutie Paw</h1>
+            <Navbar 
+                catsViewed={catsViewed}
+                handleLoginShow={handleLoginShow}
+                handleRegisterShow={handleRegisterShow}
+                logout={logout}
+            />
             <h2>A cat image generation app</h2>
             <CatImage addFavorite={addFavorite} incrementCatsViewed={incrementCatsViewed} />
-            <FavoriteCats favorites={favorites} />
+            <FavoriteCats favorites={favorites} fetchFavorites={fetchFavorites} />
 
             <Modal show={showLogin} onHide={handleLoginClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Login</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Login />
+                    <Login handleClose={handleLoginClose} />
                 </Modal.Body>
             </Modal>
 
@@ -105,7 +90,7 @@ const App = () => {
                     <Modal.Title>Register</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Register />
+                    <Register handleClose={handleRegisterClose} />
                 </Modal.Body>
             </Modal>
         </div>
