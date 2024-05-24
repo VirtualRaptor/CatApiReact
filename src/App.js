@@ -11,7 +11,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { Modal } from 'react-bootstrap';
 import axios from 'axios';
-import '../src/index.css'; // Import the custom CSS
+import './index.css'; // Import the custom CSS
 
 const App = () => {
     const { user, logout } = useContext(AuthContext);
@@ -37,7 +37,7 @@ const App = () => {
 
     useEffect(() => {
         fetchFavorites();
-    }, [fetchFavorites]);
+    }, [fetchFavorites, user]);
 
     const handleLoginClose = () => setShowLogin(false);
     const handleLoginShow = () => setShowLogin(true);
@@ -48,14 +48,18 @@ const App = () => {
     const addFavorite = async (catImage) => {
         if (!favorites.some(fav => fav.catImageUrl === catImage)) {
             try {
-                await axios.post('http://localhost:5000/api/favorites', { catImageUrl: catImage }, {
+                const response = await axios.post('http://localhost:5000/api/favorites', { catImageUrl: catImage }, {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
                 });
-                fetchFavorites(); // Fetch updated favorites immediately
+                if (response.status === 201) {
+                    setFavorites(prevFavorites => [...prevFavorites, response.data]);
+                } else {
+                    console.error('Error adding favorite:', response.data.message);
+                }
             } catch (error) {
-                console.error('Error adding favorite:', error);
+                console.error('Error adding favorite:', error.response.data.message);
             }
         }
     };

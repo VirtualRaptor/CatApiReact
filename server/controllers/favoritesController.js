@@ -5,6 +5,11 @@ const addFavorite = async (req, res) => {
     const userId = req.user.id;
 
     try {
+        const existingFavorite = await Favorite.findOne({ userId, catImageUrl });
+        if (existingFavorite) {
+            return res.status(400).json({ message: 'This cat is already in your favorites' });
+        }
+
         const favorite = new Favorite({ userId, catImageUrl });
         await favorite.save();
         res.status(201).json(favorite);
