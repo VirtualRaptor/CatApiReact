@@ -36,7 +36,9 @@ Technologie:
     Axios: Wysyłanie żądań HTTP do API backendu oraz zewnętrznego API "The Cat API".
     React Context: Zarządzanie stanem autoryzacji użytkowników.
     React Bootstrap i PrimeReact: Stylowanie i komponenty UI.
-
+Autorzy:
+Nikodem Matlakiewicz
+Fryderyk Szmidt
 In the project directory, you can run:
 
 ### `npm install`
