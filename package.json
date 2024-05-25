@@ -82,4 +82,5 @@
       "\\.(css|jpg|png)$": "<rootDir>/src/tests/__mocks__/fileMock.js"
     }
   }
+  
 }
