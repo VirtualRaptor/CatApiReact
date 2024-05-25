@@ -36,6 +36,7 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
         <div>
             <Toast ref={toast} />
             <h3 className="text-center">Favorite Cats</h3>
+            {user && <h5>(Refresh the page if favorite cat isn't showing!)</h5>}
             {!user && <h4>Log in to see favorites!</h4>} {/* Conditionally render this text */}
             <div className="favorite-cats-container">
                 {favorites.map((cat) => (
