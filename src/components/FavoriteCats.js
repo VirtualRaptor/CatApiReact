@@ -1,4 +1,3 @@
-// src/components/FavoriteCats.js
 import React, { useState, useRef, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { Toast } from 'primereact/toast';
@@ -7,6 +6,7 @@ import axios from 'axios';
 
 const FavoriteCats = ({ favorites, fetchFavorites }) => {
     const [selectedCat, setSelectedCat] = useState(null);
+    const [nameInputs, setNameInputs] = useState({});
     const toast = useRef(null);
     const { user } = useContext(AuthContext);
 
@@ -16,6 +16,10 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
 
     const showError = () => {
         toast.current.show({ severity: 'error', summary: 'Removed', detail: 'Cat is no longer a favorite :(', life: 3000 });
+    };
+
+    const showSuccess = () => {
+        toast.current.show({ severity: 'success', summary: 'Updated', detail: 'Cat name updated!', life: 3000 });
     };
 
     const handleRemoveFavorite = async (id) => {
@@ -29,6 +33,28 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
             showError();
         } catch (error) {
             console.error('Error removing favorite:', error);
+        }
+    };
+
+    const handleNameChange = (id, value) => {
+        setNameInputs({
+            ...nameInputs,
+            [id]: value
+        });
+    };
+
+    const handleSaveName = async (id) => {
+        try {
+            const name = nameInputs[id] !== undefined ? nameInputs[id] : '';
+            const response = await axios.put(`http://localhost:5000/api/favorites/${id}`, { name }, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`
+                }
+            });
+            fetchFavorites(); // Fetch updated favorites after name change
+            showSuccess();
+        } catch (error) {
+            console.error('Error updating cat name:', error);
         }
     };
 
@@ -49,6 +75,13 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
                             src={cat.catImageUrl}
                             alt="Favorite Cat"
                         />
+                        <input
+                            type="text"
+                            value={nameInputs[cat._id] !== undefined ? nameInputs[cat._id] : (cat.name || '')}
+                            onChange={(e) => handleNameChange(cat._id, e.target.value)}
+                            placeholder="Name your cat"
+                        />
+                        <Button className="primary" onClick={(e) => { e.stopPropagation(); handleSaveName(cat._id); }}>Save</Button>
                         <Button className="danger" onClick={(e) => { e.stopPropagation(); handleRemoveFavorite(cat._id); }}>Remove</Button>
                     </div>
                 ))}

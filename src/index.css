@@ -124,7 +124,6 @@ h5 {
   text-align: center;
   background-color: #fdef73;
   border-radius: 10px;
-
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, margin 0.3s ease; /* Added margin animation */
@@ -149,9 +148,17 @@ h5 {
   height: 120px; /* Increase the size of the image */
 }
 
-.favorite-cat button {
+.favorite-cat input {
   display: block;
-  margin: 10px auto 0;
+  margin: 10px auto;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.favorite-cat button {
+  display: inline-block;
+  margin: 5px;
 }
 
 .buttons-container {
