@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5217/api',  // Zaktualizuj URL do poprawnego portu
+  baseURL: 'http://localhost:5217/api', // Zaktualizuj URL do poprawnego portu
 });
 
 api.interceptors.request.use(config => {
@@ -10,6 +10,8 @@ api.interceptors.request.use(config => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
+}, (error) => {
+    return Promise.reject(error);
 });
 
 export default api;

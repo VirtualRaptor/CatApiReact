@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import { Toast } from 'primereact/toast';
 import { AuthContext } from '../context/AuthContext';
+import api from '../api'; // Import API
 
-const CatImage = ({ addFavorite, incrementCatsViewed }) => {
+const CatImage = ({ incrementCatsViewed }) => {
     const [catImage, setCatImage] = useState('');
     const toast = useRef(null);
+    const { user } = useContext(AuthContext); // Pobierz kontekst uwierzytelniania
 
     const fetchCatImage = async () => {
         try {
-            const response = await axios.get('https://api.thecatapi.com/v1/images/search', {
+            const response = await api.get('https://api.thecatapi.com/v1/images/search', {
                 headers: {
                     'x-api-key': 'live_Koi6fG3xYJ9TxZIFJ64NnzcdKSXkJqiii27xsAl7eKHvYt1fBUnNKiyYWaS1eVEA'
                 }
@@ -27,12 +28,16 @@ const CatImage = ({ addFavorite, incrementCatsViewed }) => {
     };
 
     const handleAddFavorite = async () => {
+        if (!user) {
+            console.error('User not authenticated');
+            return;
+        }
+
         try {
-            await axios.post('http://localhost:5217/api/favorites', { catImageUrl: catImage });
-            addFavorite(catImage);
+            await api.post('/favorites', { catImageUrl: catImage });
             showSuccess();
         } catch (error) {
-            console.error('Error adding favorite:', error);
+            console.error('Error adding favorite:', error.response?.data?.message || error.message);
         }
     };
 

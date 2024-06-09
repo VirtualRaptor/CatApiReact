@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import CatImage from './components/CatImage';
 import FavoriteCats from './components/FavoriteCats';
@@ -10,7 +9,7 @@ import 'primereact/resources/themes/lara-light-pink/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { Modal } from 'react-bootstrap';
-import axios from 'axios';
+import api from './api';
 import './index.css'; // Import the custom CSS
 
 const App = () => {
@@ -23,11 +22,7 @@ const App = () => {
     const fetchFavorites = useCallback(async () => {
         if (user) {
             try {
-                const response = await axios.get('http://localhost:5217/api/favorites', {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`
-                    }
-                });
+                const response = await api.get('/favorites');
                 setFavorites(response.data);
             } catch (error) {
                 console.error('Error fetching favorites:', error);
@@ -48,11 +43,7 @@ const App = () => {
     const addFavorite = async (catImage) => {
         if (!favorites.some(fav => fav.catImageUrl === catImage)) {
             try {
-                const response = await axios.post('http://localhost:5217/api/favorites', { catImageUrl: catImage }, {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`
-                    }
-                });
+                const response = await api.post('/favorites', { catImageUrl: catImage });
                 if (response.status === 201) {
                     setFavorites(prevFavorites => [...prevFavorites, response.data]);
                 } else {
@@ -78,7 +69,11 @@ const App = () => {
             />
             <h2>A cat image generation app</h2>
             <CatImage addFavorite={addFavorite} incrementCatsViewed={incrementCatsViewed} />
-            <FavoriteCats favorites={favorites} fetchFavorites={fetchFavorites} />
+            
+            {/* Warunkowe renderowanie FavoriteCats */}
+            {user && favorites.length > 0 && 
+                <FavoriteCats favorites={favorites} fetchFavorites={fetchFavorites} />
+            }
 
             <Modal show={showLogin} onHide={handleLoginClose}>
                 <Modal.Header closeButton>

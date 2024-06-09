@@ -55,11 +55,13 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
             <Toast ref={toast} />
             <h3 className="text-center">Favorite Cats</h3>
             {user && <h5>(Refresh the page if favorite cat isn't showing!)</h5>}
-            {!user && <h4>Log in to see favorites!</h4>} {/* Conditionally render this text */}
+            {!user && <h4>Log in to see favorites!</h4>}
             <div className="favorite-cats-container">
                 {favorites.map((cat) => (
+                    console.log(cat),
                     <div
-                        key={cat._id}
+                        key={cat.id} // Dodaj unikalny klucz tutaj
+                        
                         className={`favorite-cat ${selectedCat === cat.catImageUrl ? 'enlarged-cat' : ''}`}
                         onClick={() => handleImageClick(cat.catImageUrl)}
                     >
@@ -69,12 +71,12 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
                         />
                         <input
                             type="text"
-                            value={nameInputs[cat._id] !== undefined ? nameInputs[cat._id] : (cat.name || '')}
-                            onChange={(e) => handleNameChange(cat._id, e.target.value)}
+                            defaultValue={cat.name || ''}
+                            onChange={(e) => handleNameChange(cat.id, e.target.value)}
                             placeholder="Name your cat"
                         />
-                        <Button className="primary" onClick={(e) => { e.stopPropagation(); handleSaveName(cat._id); }}>Save</Button>
-                        <Button className="danger" onClick={(e) => { e.stopPropagation(); handleRemoveFavorite(cat._id); }}>Remove</Button>
+                        <Button className="primary" onClick={(e) => { e.stopPropagation(); handleSaveName(cat.id); }}>Save</Button>
+                        <Button className="danger" onClick={(e) => { e.stopPropagation(); handleRemoveFavorite(cat.id); }}>Remove</Button>
                     </div>
                 ))}
             </div>
