@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { Toast } from 'primereact/toast';
 import { AuthContext } from '../context/AuthContext';
-import axios from 'axios';
+import api from '../api'; // Import API
 
 const FavoriteCats = ({ favorites, fetchFavorites }) => {
     const [selectedCat, setSelectedCat] = useState(null);
@@ -24,11 +24,7 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
 
     const handleRemoveFavorite = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/favorites/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
+            await api.delete(`/favorites/${id}`);
             fetchFavorites(); // Fetch updated favorites after removal
             showError();
         } catch (error) {
@@ -46,11 +42,7 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
     const handleSaveName = async (id) => {
         try {
             const name = nameInputs[id] !== undefined ? nameInputs[id] : '';
-            const response = await axios.put(`http://localhost:5000/api/favorites/${id}`, { name }, {
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
+            await api.put(`/favorites/${id}`, { name });
             fetchFavorites(); // Fetch updated favorites after name change
             showSuccess();
         } catch (error) {

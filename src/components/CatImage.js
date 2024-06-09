@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'; // Add useContext
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import { Toast } from 'primereact/toast';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
+import { AuthContext } from '../context/AuthContext';
 
 const CatImage = ({ addFavorite, incrementCatsViewed }) => {
     const [catImage, setCatImage] = useState('');
     const toast = useRef(null);
-    const { user } = useContext(AuthContext); // Use AuthContext to get user
 
     const fetchCatImage = async () => {
         try {
@@ -29,11 +28,7 @@ const CatImage = ({ addFavorite, incrementCatsViewed }) => {
 
     const handleAddFavorite = async () => {
         try {
-            await axios.post('http://localhost:5000/api/favorites', { catImageUrl: catImage }, {
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
+            await axios.post('http://localhost:5217/api/favorites', { catImageUrl: catImage });
             addFavorite(catImage);
             showSuccess();
         } catch (error) {
@@ -43,7 +38,7 @@ const CatImage = ({ addFavorite, incrementCatsViewed }) => {
 
     useEffect(() => {
         fetchCatImage();
-    }, []);
+    }, []); // Dodaj fetchCatImage do zależności, jeśli potrzebne
 
     return (
         <div className="cat-container">

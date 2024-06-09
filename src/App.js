@@ -23,7 +23,7 @@ const App = () => {
     const fetchFavorites = useCallback(async () => {
         if (user) {
             try {
-                const response = await axios.get('http://localhost:5000/api/favorites', {
+                const response = await axios.get('http://localhost:5217/api/favorites', {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
@@ -48,7 +48,7 @@ const App = () => {
     const addFavorite = async (catImage) => {
         if (!favorites.some(fav => fav.catImageUrl === catImage)) {
             try {
-                const response = await axios.post('http://localhost:5000/api/favorites', { catImageUrl: catImage }, {
+                const response = await axios.post('http://localhost:5217/api/favorites', { catImageUrl: catImage }, {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
