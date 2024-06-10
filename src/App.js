@@ -10,7 +10,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import { Modal } from 'react-bootstrap';
 import api from './api';
-import './index.css'; // Import the custom CSS
+import './index.css';
 
 const App = () => {
     const { user, logout } = useContext(AuthContext);
@@ -70,7 +70,6 @@ const App = () => {
             <h2>A cat image generation app</h2>
             <CatImage addFavorite={addFavorite} incrementCatsViewed={incrementCatsViewed} />
             
-            {/* Warunkowe renderowanie FavoriteCats */}
             {user && favorites.length > 0 && 
                 <FavoriteCats favorites={favorites} fetchFavorites={fetchFavorites} />
             }

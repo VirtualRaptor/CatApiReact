@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { Toast } from 'primereact/toast';
 import { AuthContext } from '../context/AuthContext';
-import api from '../api'; // Import API
+import api from '../api';
 
 const FavoriteCats = ({ favorites, fetchFavorites }) => {
     const [selectedCat, setSelectedCat] = useState(null);
@@ -25,7 +25,7 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
     const handleRemoveFavorite = async (id) => {
         try {
             await api.delete(`/favorites/${id}`);
-            fetchFavorites(); // Fetch updated favorites after removal
+            fetchFavorites();
             showError();
         } catch (error) {
             console.error('Error removing favorite:', error);
@@ -43,7 +43,7 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
         try {
             const name = nameInputs[id] !== undefined ? nameInputs[id] : '';
             await api.put(`/favorites/${id}`, { name });
-            fetchFavorites(); // Fetch updated favorites after name change
+            fetchFavorites();
             showSuccess();
         } catch (error) {
             console.error('Error updating cat name:', error);
@@ -60,8 +60,7 @@ const FavoriteCats = ({ favorites, fetchFavorites }) => {
                 {favorites.map((cat) => (
                     console.log(cat),
                     <div
-                        key={cat.id} // Dodaj unikalny klucz tutaj
-                        
+                        key={cat.id}
                         className={`favorite-cat ${selectedCat === cat.catImageUrl ? 'enlarged-cat' : ''}`}
                         onClick={() => handleImageClick(cat.catImageUrl)}
                     >

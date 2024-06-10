@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5217/api', // Zaktualizuj URL do poprawnego portu
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5217/api', // Zaktualizuj URL do poprawnego portu
 });
 
 api.interceptors.request.use(config => {
@@ -11,7 +11,7 @@ api.interceptors.request.use(config => {
   }
   return config;
 }, (error) => {
-    return Promise.reject(error);
+  return Promise.reject(error);
 });
 
 export default api;

@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { Toast } from 'primereact/toast';
 import { AuthContext } from '../context/AuthContext';
-import api from '../api'; // Import API
+import api from '../api';
 
 const CatImage = ({ incrementCatsViewed }) => {
     const [catImage, setCatImage] = useState('');
     const toast = useRef(null);
-    const { user } = useContext(AuthContext); // Pobierz kontekst uwierzytelniania
+    const { user } = useContext(AuthContext);
 
     const fetchCatImage = async () => {
         try {
@@ -43,7 +43,7 @@ const CatImage = ({ incrementCatsViewed }) => {
 
     useEffect(() => {
         fetchCatImage();
-    }, []); // Dodaj fetchCatImage do zależności, jeśli potrzebne
+    }, []);
 
     return (
         <div className="cat-container">
